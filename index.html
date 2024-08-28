@@ -1,42 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Title</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pókemon | Pokedex</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="video-background">
+        <video autoplay muted loop playsinline class="pokemon-video" src="assets/video/pokemon_animado.mp4" type="video/mp4"></video>
+        <div class="grid-container">
+            <header>
+                <div class="pokemon-title">
+                    <img src="assets/img/pokemon.png" alt="pokemon img">
+                </div>
+            </header>
+            <main class="main-container">
+                <form class="pokemon-form">
+                    <input type="text" placeholder="Buscar pókemon por id o nombre" class="input">
+                    <button type="submit" class="search__btn">
+                        <img src="assets/img/icon.svg" alt="">
+                    </button>
+                </form>
 
-    <!-- Bootstrap CSS v5.2.1 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-  </head>
-
-  <body>
-    <header>
-      <!-- place navbar here -->
-    </header>
-    <main></main>
-    <footer>
-      <!-- place footer here -->
-    </footer>
-    <!-- Bootstrap JavaScript Libraries -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+                <div class="pokemon-container">
+                    <div class="pokemon-list">
+                        <h2 class="list-title">lista de pókemones</h2>
+                        <div class="list-items">
+                            
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer>
+                <div class="footer-content">
+                    <p>Desarrollado por: Gerardo Ortiz | Glenn Garcia | Adolfo Campos |
+                        Daniel Salazar</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script type="module" src="/assets/js/script.js"></script>
+</body>
 </html>
