@@ -2,8 +2,11 @@ import { typeTraslate } from "./utils.js";
 
 
 const pokemonList = document.querySelector('.list-items');
+const loadMore = document.getElementById('load-more');
+const loadingSpinner = document.getElementById('loading-spinner');
 let offset = 0;
 const limit = 20;
+let isLoading = false;
 
 async function fetchPokemonDetails(url) {
     try {
@@ -17,6 +20,8 @@ async function fetchPokemonDetails(url) {
 
 async function loadPokemon() {
     try {
+        isLoading = true;
+        loadingSpinner.style.display = 'flex';
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
         if (!response.ok) throw new Error('Error al obtener la lista de Pokémones');
 
@@ -43,15 +48,46 @@ async function loadPokemon() {
         offset += limit;
     } catch (error) {
         console.error('Error fetching Pokémon:', error);
+        loadingSpinner.style.display = 'none';
+        isLoading = false;   
+    } finally {
+        isLoading = false;
+        loadingSpinner.style.display = 'none';
+    }
+}
+function handleScroll() {
+    if (pokemonList.scrollTop + pokemonList.clientHeight >= pokemonList.scrollHeight - 5 && !isLoading) {
+        loadPokemon();
+        
     }
 }
 
-// cargando la lista inicial de pókemones
+pokemonList.addEventListener('scroll', handleScroll);
 loadPokemon();
 
-// detectar el scroll para cargar mas pókemones
-pokemonList.parentElement.addEventListener('scroll', () => {
-    if (pokemonList.parentElement.scrollTop + pokemonList.parentElement.clientHeight >= pokemonList.parentElement.scrollHeight) {
-        loadPokemon();
-    }
-});
+// const observer = new IntersectionObserver((entries) => {
+//     if(entries[0].isIntersecting && !isLoading){
+//         observer.unobserve(loadMore);
+
+//         setTimeout(() =>{
+//             loadPokemon().then(() =>{
+//                 observer.observe(loadMore);
+//             });
+//         },4000);
+        
+//     }
+// },{
+//     root:null,
+//     rootMargin: '0px',
+//     threshold: 1.0
+// })
+// observer.observe(loadMore);
+// cargando la lista inicial de pókemones
+
+
+// // detectar el scroll para cargar mas pókemones
+// pokemonList.parentElement.addEventListener('scroll', () => {
+//     if (pokemonList.parentElement.scrollTop + pokemonList.parentElement.clientHeight >= pokemonList.parentElement.scrollHeight) {
+//         loadPokemon();
+//     }
+// });
