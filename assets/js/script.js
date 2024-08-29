@@ -1,9 +1,11 @@
+//importaciones
 import { typeTraslate } from "./utils.js";
 
-
+// elementos del DOM
 const pokemonList = document.querySelector('.list-items');
-const loadMore = document.getElementById('load-more');
 const loadingSpinner = document.getElementById('loading-spinner');
+
+
 let offset = 0;
 const limit = 20;
 let isLoading = false;
@@ -65,29 +67,9 @@ function handleScroll() {
 pokemonList.addEventListener('scroll', handleScroll);
 loadPokemon();
 
-// const observer = new IntersectionObserver((entries) => {
-//     if(entries[0].isIntersecting && !isLoading){
-//         observer.unobserve(loadMore);
 
-//         setTimeout(() =>{
-//             loadPokemon().then(() =>{
-//                 observer.observe(loadMore);
-//             });
-//         },4000);
-        
-//     }
-// },{
-//     root:null,
-//     rootMargin: '0px',
-//     threshold: 1.0
-// })
-// observer.observe(loadMore);
-// cargando la lista inicial de pókemones
+//colocar función para renderizar la card pokémon
 
 
-// // detectar el scroll para cargar mas pókemones
-// pokemonList.parentElement.addEventListener('scroll', () => {
-//     if (pokemonList.parentElement.scrollTop + pokemonList.parentElement.clientHeight >= pokemonList.parentElement.scrollHeight) {
-//         loadPokemon();
-//     }
-// });
+
+//Evento para manejar el formulario
