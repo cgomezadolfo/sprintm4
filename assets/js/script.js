@@ -1,9 +1,12 @@
 //importaciones
 import { typeTraslate } from "./utils.js";
+import { searchPokemon } from "./searchPokemon";
 
 // elementos del DOM
 const pokemonList = document.querySelector('.list-items');
 const loadingSpinner = document.getElementById('loading-spinner');
+const pokemonCard = document.querySelector('.pokemon-card');
+const pokemonForm = document.querySelector('.pokemon-form');
 
 
 let offset = 0;
@@ -70,6 +73,36 @@ loadPokemon();
 
 //colocar función para renderizar la card pokémon
 
+function renderPokemonCard(pokemon) {
+    pokemonList.style.display = 'none';
+    pokemonCard.style.display = 'block';
+
+    const types = pokemon.types.map(typeInfo => typeTraslate(typeInfo.type.name).type).join(' - ');
+
+    pokemonCard.innerHTML = `
+        <div class="card">
+            <div class="card-title">
+                <h4>#${pokemon.id} - ${pokemon.name}</h4>
+            </div>
+            <div class="card-body">
+                <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" class="card-img">
+                <p>Tipo: ${types}</p>
+                <button class="view-hability">Ver habilidades</button>
+            </div>
+            <button class="back-to-list">Volver a la lista</button>
+        </div>
+    `;
+
+    document.querySelector('.back-to-list').addEventListener('click', () => {
+        pokemonCard.style.display = 'none';
+        pokemonList.style.display = 'block';
+    });
+
+    document.querySelector('.view-hability').addEventListener('click', () => {
+        const abilities = pokemon.abilities.map(abilityInfo => abilityInfo.ability.name).join(', ');
+        alert(`Habilidades de ${pokemon.name}: ${abilities}`);
+    });
+}
 
 
 //Evento para manejar el formulario
