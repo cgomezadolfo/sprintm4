@@ -1,6 +1,6 @@
 //importaciones
 import { typeTraslate } from "./utils.js";
-import { searchPokemon } from "./searchPokemon";
+import { searchPokemon } from "./searchPokemon.js";
 
 // elementos del DOM
 const pokemonList = document.querySelector('.list-items');
@@ -104,5 +104,14 @@ function renderPokemonCard(pokemon) {
     });
 }
 
-
 //Evento para manejar el formulario
+pokemonForm.addEventListener('submit', async (event) =>{
+    event.preventDefault();
+    const inputValue = document.querySelector('.input').value;
+    const pokemon = await searchPokemon(inputValue);
+    if(pokemon){
+        renderPokemonCard(pokemon);
+    }
+
+    pokemonForm.reset();
+})
