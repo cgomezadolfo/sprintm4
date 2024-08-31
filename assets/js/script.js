@@ -1,6 +1,9 @@
 //importaciones
 import { typeTraslate } from "./utils.js";
 import { searchPokemon } from "./searchPokemon.js";
+import { fetchEvolutionChain } from "./evolutionChain.js";
+import { fetchPokemonDetails } from "./pokemonDetails.js";
+import { showAbilitiesChart } from "./ShowAbilities.js";
 
 // elementos del DOM
 const pokemonList = document.querySelector('.list-items');
@@ -13,15 +16,7 @@ let offset = 0;
 const limit = 20;
 let isLoading = false;
 
-async function fetchPokemonDetails(url) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Error al obtener los detalles del Pokémon');
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
-}
+
 
 async function loadPokemon() {
     try {
@@ -73,23 +68,54 @@ loadPokemon();
 
 //colocar función para renderizar la card pokémon
 
-function renderPokemonCard(pokemon) {
+async function renderPokemonCard(pokemon){
     pokemonList.style.display = 'none';
     pokemonCard.style.display = 'block';
+    console.log(pokemon);
+    //Obtener evolución 
+    const evolutionChain = await fetchEvolutionChain(pokemon.id)
+    console.log(evolutionChain);
+    const previousEvolution = evolutionChain.previous;
+    const nextEvolution = evolutionChain.next;
 
-    const types = pokemon.types.map(typeInfo => typeTraslate(typeInfo.type.name).type).join(' - ');
+    //typos de pokemon en español y con sus respectivos colores
+    const types = pokemon.types.map(typeInfo => {
+        const { type,color} = typeTraslate(typeInfo.type.name);
+        return `<span class="type-box ${color}" style="background: ${color};">${type}</span>`
+    }).join(' ');
 
     pokemonCard.innerHTML = `
         <div class="card">
             <div class="card-title">
-                <h4>#${pokemon.id} - ${pokemon.name}</h4>
+                <h2>#${pokemon.id} - ${pokemon.name}</h2>
             </div>
             <div class="card-body">
-                <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" class="card-img">
-                <p>Tipo: ${types}</p>
+                <div class="pokemon-grid">
+                    <div class="previous-evolution">
+                        ${previousEvolution ? `
+                            <h4>${previousEvolution.name}</h4>
+                            <img src="${previousEvolution.image}" alt="${previousEvolution.name}" class="evolution-img">
+                        ` : ''}
+                    </div>
+                    <div class="main-pokemon">
+                        <h4>Experiencia Base: ${pokemon.base_experience}</h4>
+                        <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" class="card-img">
+                    </div>
+                    <div class="next-evolution">
+                        ${nextEvolution ? `
+                            <h4>${nextEvolution.name}</h4>
+                            <img src="${nextEvolution.image}" alt="${nextEvolution.name}" class="evolution-img">
+                        ` : ''}
+                    </div>
+                </div>
+                <div class="types">
+                    ${types}
+                </div>
                 <button class="view-hability">Ver habilidades</button>
             </div>
-            <button class="back-to-list">Volver a la lista</button>
+            <div class="return">
+                <button class="back-to-list"><img src="assets/img/arrow.svg" alt="flecha"></button>
+            </div>
         </div>
     `;
 
@@ -99,8 +125,8 @@ function renderPokemonCard(pokemon) {
     });
 
     document.querySelector('.view-hability').addEventListener('click', () => {
-        const abilities = pokemon.abilities.map(abilityInfo => abilityInfo.ability.name).join(', ');
-        alert(`Habilidades de ${pokemon.name}: ${abilities}`);
+        showAbilitiesChart(pokemon)
+        console.log(pokemon.abilities);
     });
 }
 
